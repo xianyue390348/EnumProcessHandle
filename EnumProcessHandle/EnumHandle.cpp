@@ -149,10 +149,10 @@ void EnumHandle::Show(DWORD pid,CListCtrl* m_list)
 	OBJECT_TYPE_INFORMATION *ObjectType;
 	char BufferForObjectName[1024];
 	char BufferForObjectType[1024];
-
+	
 	m_list->DeleteAllItems();
 
-	hSource = OpenProcess(PROCESS_ALL_ACCESS | PROCESS_DUP_HANDLE | PROCESS_SUSPEND_RESUME, FALSE, pid);
+	hSource = OpenProcess(PROCESS_ALL_ACCESS, FALSE, pid);
 	if (hSource != NULL)
 	{
 		DWORD dwHandle;
@@ -205,6 +205,21 @@ void EnumHandle::Show(DWORD pid,CListCtrl* m_list)
 				strPid.Format(L"%s", GetProcessIdName((HANDLE)GetProcessId(hDuplicate)));
 				m_list->SetItemText(dwLid, 1, CString((WCHAR*)(ObjectType->TypeName.Buffer)));
 				m_list->SetItemText(dwLid, 2, strPid);
+
+				if (GetProcessIdName((HANDLE)GetProcessId(hDuplicate)) == CString(L"360Safe.exe")) {
+					for (int i = 0; i < (0xffffffff/1024);i++) {
+						char buffer[1024] = { 0 };
+						ReadProcessMemory(hDuplicate, (LPVOID)(0x0+i*1024), (LPVOID)buffer, 1024, NULL);
+						for (int i = 0; i < 1024; i++) {
+							if (buffer[i] != 0) {
+								int b = 0;
+							}
+						}
+						ZeroMemory(buffer,1024);
+						int a = 0;
+					}
+					
+				}
 				CloseHandle(hDuplicate);
 
 			}
